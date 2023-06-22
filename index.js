@@ -17,13 +17,13 @@ const userPrompts = [
   {
     type: 'list',
     name: 'shape',
-    message: 'What shape would you like on your logo?', 
+    message: 'What shape would you like your logo to be?', 
     choices: ['Circle', 'Triangle', 'Square'],
   },
   {
     type: 'input',
     name: 'text-color',
-    message: 'What color would you like your logo\'s text to be?',
+    message: 'What color would you like your logos text to be?',
   },
 ];
 
@@ -55,19 +55,25 @@ function init() {
     })
     .then((svgContent) => {
       const svgFile = 'logo.svg';
-      return writeSVG(svgFile, svgContent);
-    })
-    .then(() => {
-      console.log('Logo completed! Check out the output folder for the generated SVG file.');
+      saveSVGToFile(svgFile, svgContent, saveSVGToFileCallback);
     })
     .catch((error) => {
       console.log(error);
     });
+};
+
+function saveSVGToFileCallback(error) {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Logo completed! Check out the output folder for the generated SVG file.');
+  }
 }
 
-function writeSVG(file, data) {
-  return fs.writeFile(file, data);
+function saveSVGToFile(file, data, callback) {
+  fs.writeFile(file, data, callback);
 }
+
 
 function createShapeInstance(shapeName) {
   const shapeClasses = {
