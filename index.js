@@ -1,23 +1,23 @@
 const fs = require('fs');
-const inquirer = require('inquirer');
-const shapes = require('./assets/shapes');
+const { default: inquirer } = require('inquirer');
+const { Triangle, Circle, Square } = require('./assets/shapes');
 const { validateTextChoice } = require('./assets/validateTextChoice');
 // const svg = require('svg') this is only for website use right? 
-const userPrrompts =[
+const userPrompts =[
   {
     type: 'input',
     name: 'text',
     message: 'What letters would you like dispalyed on your logo, up to 3?'
   },
   {
-    type: 'list',
+    type: 'input',
     name: 'color',
-    message: 'Which color would you like your logo to be?',
-    choices: ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Pink', 'Brown', 'Black', 'White']
+    message: 'What color would you like your logo to be?',
   },
   {
     type: 'list',
-    name: 'what shape would you like on your logo?', 
+    name: 'shape',
+    message: 'what shape would you like on your logo?', 
     choices: ['Circle', 'Triangle', 'Square'],
   },
   {
@@ -44,15 +44,19 @@ class renderLogo {
 };
 
 function init() {
-  let svgRender = "";
-  let svgFile = "logo.svg";
-
-  inquirer.prompt(promptUser)
+  inquirer.prompt(userPrompts)
     .then((answers) => {
-      return writeSVG(svgFile, svgRender);
+      const logo = new renderLogo();
+      logo.newText(answers.text, answers['text-color']);
+      logo.newShape(createShapeInstance(answers['what shape would you like on your logo?']));
+      return logo.render();
+    })
+    .then((svgContent) => {
+      const svgFile = 'logo.svg';
+      return writeSVG(svgFile, svgContent);
     })
     .then(() => {
-      console.log("Logo completed! Check out the output folder for the generated svg file");
+      console.log('Logo completed! Check out the output folder for the generated SVG file.');
     })
     .catch((error) => {
       console.log(error);
@@ -61,3 +65,21 @@ function init() {
 function writeSVG(file, data) {
   return fs.writeFile(file, data);
 }
+
+function createShapeInstance(shapeName) {
+  const shapeClasses = {
+    circle: Circle,
+    triangle: Triangle,
+    square: Square,
+  };
+
+  const ShapeClass = shapeClasses[shapeName.toLowerCase()];
+
+  if (ShapeClass) {
+    return new ShapeClass();
+  } else {
+    throw new Error(`Invalid shape: ${shapeName}`);
+  }
+}
+
+init();
