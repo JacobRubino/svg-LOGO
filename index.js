@@ -25,11 +25,6 @@ const userPrrompts =[
     name: 'text-color',
     message: 'What color would you like your logos text to be?'
   },
-  {
-    type: 'confirm',
-    name: 'Would you like the logo to be small?',
-    default: false
-  },
 ]
 
 class renderLogo {
