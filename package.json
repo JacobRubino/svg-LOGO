@@ -18,6 +18,7 @@
   "homepage": "https://github.com/JacobRubino/svg-LOGO#readme",
   "dependencies": {
     "fs": "^0.0.1-security",
-    "inquirer": "^9.2.7"
+    "inquirer": "^7.3.3",
+    "jest": "^29.5.0"
   }
 }
