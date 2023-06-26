@@ -90,5 +90,5 @@ function createShapeInstance(shapeName) {
     throw new Error(`Invalid shape: ${shapeName}`);
   }
 }
-
+// create a fodler for the files to be created, fix the background color, create tests.
 init();

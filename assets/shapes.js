@@ -6,7 +6,6 @@ class Shape {
   setColor(color) {
     this.color = color;
   }
-  resize(scale) {}
 }
 class Circle extends Shape {
   render() {
