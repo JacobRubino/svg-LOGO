@@ -4,6 +4,7 @@ const { Triangle, Circle, Square } = require('./assets/shapes');
 const validateTextChoice = require('./assets/validation');
 // const { validateTextChoice } = require('./assets/validateTextChoice');
 const path = require('path');
+const outputFolder = './logos'
 const userPrompts = [
   {
     type: 'input',
@@ -32,18 +33,21 @@ const userPrompts = [
 class RenderLogo {
   constructor() {
     this.text = '';
-    this.color = '';
+    this.shapeColor = '';
+    this.textColor = '';
   }
 
   render() {
-    return `<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">${this.userShape} ${this.userText}</svg>`;
+    return `<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg"> ${this.userShape}  ${this.userText}</svg>`;
   }
 
   newText(text, color) {
-    this.userText = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">${text}</text>`;
+    this.userText = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}"> ${text}</text>`;
   }
 
   newShape(shape) {
+    this.shapeColor = shape.color;
+    shape.setColor(this.shapeColor);
     this.userShape = shape.render();
   }
 }
@@ -54,18 +58,21 @@ function init() {
       const logo = new RenderLogo();
       logo.newText(answers.text, answers['text-color']);
       logo.newShape(createShapeInstance(answers.shape));
-      return logo.render();
+      return {
+        svgContent: logo.render(),
+        answers: answers
+      };
     })
-    .then((svgContent) => {
-      const svgFile = 'logo.svg';
-      saveSVGToFile(svgFile, svgContent, saveSVGToFileCallback);
+    .then(({ svgContent, answers }) => {
+      const svgFile = `${answers.text}${answers.color}.svg`;
+      saveSVGToFile(svgFile, svgContent, saveSVGToFileCallback.bind(null, answers));
     })
     .catch((error) => {
       console.log(error);
     });
-};
+}
 
-function saveSVGToFileCallback(error) {
+function saveSVGToFileCallback(answers, error) {
   if (error) {
     console.log(error);
   } else {
@@ -74,7 +81,8 @@ function saveSVGToFileCallback(error) {
 }
 
 function saveSVGToFile(file, data, callback) {
-  fs.writeFile(file, data, callback);
+  const filePath = path.join(outputFolder, file);
+  fs.writeFile(filePath, data, callback);
 }
 
 
