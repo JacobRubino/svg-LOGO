@@ -1,13 +1,15 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const { Triangle, Circle, Square } = require('./assets/shapes');
+const validateTextChoice = require('./assets/validation');
 // const { validateTextChoice } = require('./assets/validateTextChoice');
-
+const path = require('path');
 const userPrompts = [
   {
     type: 'input',
     name: 'text',
     message: 'What letters would you like displayed on your logo, up to 3?',
+    validate: validateTextChoice,
   },
   {
     type: 'input',
@@ -30,6 +32,7 @@ const userPrompts = [
 class RenderLogo {
   constructor() {
     this.text = '';
+    this.color = '';
   }
 
   render() {
