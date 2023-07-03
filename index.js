@@ -56,8 +56,8 @@ function init() {
   inquirer.prompt(userPrompts)
     .then((answers) => {
       const logo = new RenderLogo();
-      logo.newText(answers.text, answers['text-color']);
       logo.newShape(createShapeInstance(answers.shape));
+      logo.newText(answers.text, answers['text-color']);
       return {
         svgContent: logo.render(),
         answers: answers
@@ -85,7 +85,6 @@ function saveSVGToFile(file, data, callback) {
   fs.writeFile(filePath, data, callback);
 }
 
-
 function createShapeInstance(shapeName) {
   const shapeClasses = {
     circle: Circle,
@@ -101,5 +100,4 @@ function createShapeInstance(shapeName) {
     throw new Error(`Invalid shape: ${shapeName}`);
   }
 }
-// create a fodler for the files to be created, fix the background color, create tests.
 init();

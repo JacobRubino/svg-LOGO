@@ -1,4 +1,4 @@
-//const shape = class {}
+
 class Shape {
   constructor() {
     this.color = "";
