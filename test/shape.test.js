@@ -1,4 +1,4 @@
-const { Triangle, Circle, Square } = require("../lib/shapes");
+const { Triangle, Circle, Square } = require("./assets/shapes");
 
 describe("Triangle", () => {
   test("should create a triangle", () => {
