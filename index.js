@@ -1,6 +1,6 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
-const { Triangle, Circle, Square } = require('./assets/shapes');
+const { Triangle, Circle, Square } = require('./assets');
 const validateTextChoice = require('./assets/validation');
 // const { validateTextChoice } = require('./assets/validateTextChoice');
 const path = require('path');
@@ -54,7 +54,7 @@ class RenderLogo {
 
 function init() {
   inquirer.prompt(userPrompts)
-    .then((answers) => {
+    .then(function (answers) {
       const logo = new RenderLogo();
       logo.newShape(createShapeInstance(answers.shape));
       logo.newText(answers.text, answers['text-color']);
@@ -63,11 +63,11 @@ function init() {
         answers: answers
       };
     })
-    .then(({ svgContent, answers }) => {
+    .then(function ({ svgContent, answers }) {
       const svgFile = `${answers.text}${answers.color}.svg`;
       saveSVGToFile(svgFile, svgContent, saveSVGToFileCallback.bind(null, answers));
     })
-    .catch((error) => {
+    .catch(function (error) {
       console.log(error);
     });
 }
@@ -100,4 +100,5 @@ function createShapeInstance(shapeName) {
     throw new Error(`Invalid shape: ${shapeName}`);
   }
 }
+
 init();
